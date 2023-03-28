@@ -12,7 +12,7 @@ const bcrypt = require("bcryptjs");
  */
 
 async function getUserById(id) {
-    let elt = await User.findById(id);
+    let elt = await User.findOne({"_id":id});
     return elt;
 }
 
@@ -25,7 +25,7 @@ async function getUserById(id) {
  */
 
 async function getUserByEmail(email) {
-    let elt = await User.findOne({ email });
+    let elt = await User.findOne({ "email": email });
     return elt;
 }
 
@@ -54,9 +54,12 @@ async function getUserByEmail(email) {
 
 async function createUser(userBody) {
     if (await User.isEmailTaken(userBody.email)) {
-        throw new ApiError(httpStatus.OK, "Email already taken")
+        throw new ApiError(
+            httpStatus.OK, 
+            "Email already taken"
+        );
     }
-    let newUser = await User.create(userBody);
+    let newUser = User.create(userBody);
     return newUser;
 }
 

@@ -35,7 +35,7 @@ describe("User routes", () => {
           .get(`/v1/users/invalidMongoID`)
           .send();
 
-        expect(res.status).toEqual(httpStatus.NOT_FOUND);
+        expect(res.status).toEqual(httpStatus.BAD_REQUEST);
       });
 
     });

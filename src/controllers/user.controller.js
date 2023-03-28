@@ -42,12 +42,13 @@ const { http } = require("winston");
 const getUser = catchAsync(async (req, res) => {
   let user = await userService.getUserById(req.params.userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found")
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "User not found"
+    );
   }
-  if (user.email != req.user.email) {
-    throw new ApiError(httpStatus.FORBIDDEN, "User not authorized to access this resource");
-  }
-  res.status(httpStatus.OK).send(user);
+  console.log(user);
+  return res.status(200).json(user);
 });
 
 

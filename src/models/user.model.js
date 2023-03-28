@@ -44,8 +44,15 @@ const userSchema = mongoose.Schema(
       type: String,
       default: config.default_address,
     },
+    createdAt:{
+      type: Date,
+      default:Date.now
+    },
+    updatedAt:{
+      type: Date,
+      default:Date.now
+    },
   },
-  // Create createdAt and updatedAt fields automatically
   {
     timestamps: true,
   }
