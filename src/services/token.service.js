@@ -24,13 +24,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
     type: type
   };
   const token = jwt.sign(payload, secret);
-  const tokens = {
-    access: {
-      token: token.toString(),
-      expires: new Date(expires * 1000)
-    }
-  }
-  return tokens;
+  return token;
 };
 
 /**
@@ -52,7 +46,14 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
 const generateAuthTokens = async (user) => {
   const accessTokenExpires = Math.floor(Date.now() / 1000) + config.jwt.accessExpirationMinutes * 60;
   const token = generateToken(user._id.toString(), accessTokenExpires, tokenTypes.ACCESS, config.jwt.secret);
-  return token;
+  const time=jwt.decode(token).exp;
+  const tokens = {
+    "access": {
+      "token": token.toString(),
+      "expires": new Date(time * 1000)
+    }
+  }
+  return tokens;
 };
 
 module.exports = {

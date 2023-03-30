@@ -37,7 +37,7 @@ const { password } = require("../validations/custom.validation");
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
-  return res.status(httpStatus.CREATED).send({ user, tokens });
+  return res.status(httpStatus.CREATED).json({ user, tokens });
 });
 
 /**
@@ -73,7 +73,7 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
-  return res.status(httpStatus.OK).send({ user, tokens });
+  return res.status(httpStatus.OK).json({ user, tokens });
 });
 
 module.exports = {
