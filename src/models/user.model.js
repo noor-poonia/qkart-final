@@ -45,14 +45,6 @@ const userSchema = mongoose.Schema(
       type: String,
       default: config.default_address,
     },
-    createdAt:{
-      type: Date,
-      default:Date.now
-    },
-    updatedAt:{
-      type: Date,
-      default:Date.now
-    },
   },
   {
     timestamps: true,
@@ -77,7 +69,7 @@ userSchema.statics.isEmailTaken = async function (email) {
  * @returns {Promise<boolean>}
  */
 
- userSchema.pre('save',function(next){
+userSchema.pre('save',function(next){
   let user=this;
 
   if(!user.isModified('password'))return next()
@@ -99,8 +91,10 @@ userSchema.methods.isPasswordMatch = async function (password) {
   return isPasswordMatch;
 };
 
-
-
+userSchema.methods.hasSetNonDefaultAddress = async function () {
+  const user = this;
+  return user.address !== config.default_address;
+}
 /*
  * Create a Mongoose model out of userSchema and export the model as "User"
  * Note: The model should be accessible in a different module when imported like below
