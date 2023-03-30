@@ -96,7 +96,7 @@ const setAddress = catchAsync(async (req, res) => {
     );
   }
 
-  const address = userService.setAddress(user, req.body.address);
+  const address = await userService.setAddress(user, req.body.address);
 
   res.send({
     address: address,
