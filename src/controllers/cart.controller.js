@@ -51,7 +51,6 @@ const addProductToCart = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(cart);
 });
 
-// TODO: CRIO_TASK_MODULE_CART - Implement updateProductInCart()
 /**
  * Update product quantity in cart
  * - If updated quantity > 0, 
@@ -68,13 +67,6 @@ const addProductToCart = catchAsync(async (req, res) => {
  *
  */
 const updateProductInCart = catchAsync(async (req, res) => {
-  // let cart;
-  // if (req.body.quantity > 0) {
-  //   cart = await cartService.updateProductInCart(req.user, req.body.productId, req.body.quantity);
-  //   return res.status(httpStatus.OK).send(cart);
-  // } 
-  // cart = await cartService.deleteProductFromCart(req.user, req.body.productId);
-  // return res.status(httpStatus.NO_CONTENT).send(cart);
   if (req.body.quantity == 0) {
     await cartService.deleteProductFromCart(req.user, req.body.productId);
     return res.status(httpStatus.NO_CONTENT).send();
@@ -83,8 +75,19 @@ const updateProductInCart = catchAsync(async (req, res) => {
   return res.status(httpStatus.OK).send(cart);
 });
 
+/**
+ * Checkout user's cart
+ */
+const checkout = catchAsync(async (req, res) => {
+  await cartService.checkout(req.user);
+  return (
+    res.status(httpStatus.OK).send(cart)
+  );
+});
+
 module.exports = {
   getCart,
   addProductToCart,
   updateProductInCart,
+  checkout,
 };

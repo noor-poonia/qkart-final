@@ -15,7 +15,6 @@ const ApiError = require("../utils/ApiError");
 const verifyCallback = (req, resolve, reject) => async (err, user, info) => {
   const userId = req.params.userId;
 
-  console.log("user from req obj " + req.user);
   if (user) {
     if (userId) {
       if (user._id.toString() !== userId) {

@@ -1,9 +1,6 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { authService, userService, tokenService } = require("../services");
-const { User } = require("../models");
-const passport = require("passport");
-const { password } = require("../validations/custom.validation");
 
 /**
  * Perform the following steps:

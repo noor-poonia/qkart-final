@@ -3,7 +3,6 @@ const { Cart, Product } = require("../models");
 const ApiError = require("../utils/ApiError");
 const config = require("../config/config");
 
-// TODO: CRIO_TASK_MODULE_CART - Implement the Cart service methods
 
 /**
  * Fetches cart for a user
@@ -193,9 +192,68 @@ const deleteProductFromCart = async (user, productId) => {
 };
 
 
+// TODO: CRIO_TASK_MODULE_TEST - Implement checkout function
+/**
+ * Checkout a users cart.
+ * On success, users cart must have no products.
+ *
+ * @param {User} user
+ * @returns {Promise}
+ * @throws {ApiError} when cart is invalid
+ */
+const checkout = async (user) => {
+  let cart = await Cart.findOne({ "email": user.email });
+  if (!cart) 
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "User does not have a cart"
+    );
+  
+  if (!user) 
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User does not exist"
+    );
+  
+  if (cart.cartItems.length === 0)
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Cart is empty"
+    );
+  
+  if (!(await user.hasSetNonDefaultAddress()))
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Address not set"
+    );
+
+  if (user.walletMoney === 0) 
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User has insufficient money to process"
+    );
+
+  let cartTotal = 0;
+  for (let i = 0; i < cart.cartItems.length; i++) {
+    cartTotal += parseInt(cart.cartItems[i].product.cost) * parseInt(cart.cartItems[i].quantity);
+  }
+
+  if (cartTotal > user.walletMoney)
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User has insufficient money to process"
+    );
+  
+  user.walletMoney -= cartTotal;
+  await user.save();
+  cart.cartItems.splice(0, cart.cartItems.length);
+  await cart.save();
+};
+
 module.exports = {
   getCartByUser,
   addProductToCart,
   updateProductInCart,
   deleteProductFromCart,
+  checkout,
 };

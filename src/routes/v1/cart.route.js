@@ -8,9 +8,23 @@ const router = express.Router();
 
 router.get("/", auth, cartController.getCart);
 
-router.post("/", auth, validate(cartValidation.addProductToCart), cartController.addProductToCart);
+router.post(
+  "/",
+  auth,
+  validate(cartValidation.addProductToCart),
+  cartController.addProductToCart
+);
 
-router.put("/", auth, validate(cartValidation.addProductToCart), cartController.updateProductInCart);
+router.put(
+  "/",
+  auth,
+  validate(cartValidation.addProductToCart),
+  cartController.updateProductInCart
+);
 
+router.put(
+  "/checkout",
+  cartController.checkout
+);
 
 module.exports = router;
