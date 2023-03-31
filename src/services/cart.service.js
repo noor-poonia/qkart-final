@@ -205,43 +205,37 @@ const checkout = async (user) => {
   let cart = await Cart.findOne({ "email": user.email });
   if (!cart) 
     throw new ApiError(
-      httpStatus.NOT_FOUND,
-      "User does not have a cart"
+      httpStatus.NOT_FOUND
     );
   
   if (!user) 
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "User does not exist"
+      httpStatus.BAD_REQUEST
     );
   
   if (cart.cartItems.length === 0)
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Cart is empty"
+      httpStatus.BAD_REQUEST
     );
   
   if (!(await user.hasSetNonDefaultAddress()))
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Address not set"
+      httpStatus.BAD_REQUEST
     );
 
   if (user.walletMoney === 0) 
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "User has insufficient money to process"
+      httpStatus.BAD_REQUEST
     );
 
   let cartTotal = 0;
   for (let i = 0; i < cart.cartItems.length; i++) {
-    cartTotal += parseInt(cart.cartItems[i].product.cost) * parseInt(cart.cartItems[i].quantity);
+    cartTotal += (cart.cartItems[i].product.cost) * (cart.cartItems[i].quantity);
   }
 
   if (cartTotal > user.walletMoney)
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "User has insufficient money to process"
+      httpStatus.BAD_REQUEST
     );
   
   user.walletMoney -= cartTotal;

@@ -30,7 +30,7 @@ describe("Cart test", () => {
       expect(res).rejects.toThrow(ApiError)
       expect(res).rejects.toEqual(
         expect.objectContaining({
-          statuscode: httpStatus.NOT_FOUND,
+          statusCode: httpStatus.NOT_FOUND,
         })
       )
 
@@ -82,7 +82,7 @@ describe("Cart test", () => {
       // - the "statusCode" field of response is "400 BAD REQUEST"
       expect(res).rejects.toThrow(ApiError)
       expect(res).rejects.toEqual(
-        except.objectContaining({
+        expect.objectContaining({
           statusCode: httpStatus.BAD_REQUEST,
         })
       )
@@ -106,7 +106,7 @@ describe("Cart test", () => {
       // - the "statusCode" field of response is "400 BAD REQUEST"
       expect(res).rejects.toThrow(ApiError);
       expect(res).rejects.toEqual(
-        except.objectContaining({
+        expect.objectContaining({
           statusCode: httpStatus.BAD_REQUEST,
         })
       )
@@ -142,7 +142,7 @@ describe("Cart test", () => {
       expect(hasSetNonDefaultAddressMock.mock.calls.length).not.toBe(0);
 
       // TODO: CRIO_TASK_MODULE_TEST - Assert that the wallet balance of user was reduced
-      except(userOneFinal.walletMoney).toBeLessThan(userOne.walletMoney);
+      expect(userOneFinal.walletMoney).toBeLessThan(userOne.walletMoney);
     });
   });
 });
