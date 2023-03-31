@@ -45,7 +45,6 @@ describe("Cart test", () => {
        *  "stack": "<Error-stack-trace-if-present>"
        * }
        */
-      //  expect(true).toEqual(false);
     });
 
     it("should throw 400 error if user's cart doesn't have any product", async () => {
