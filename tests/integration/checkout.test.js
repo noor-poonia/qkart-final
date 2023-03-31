@@ -97,7 +97,7 @@ describe("Cart routes", () => {
       // TODO: CRIO_TASK_MODULE_TEST - Get the cart for "userOne" and assert if
       // - Cart exists
       // - Length of "cartItems" array is 0
-      const cart = await cart.findOne({ "email": userOne.email })
+      const cart = await Cart.findOne({ "email": userOne.email })
       expect(cart).not.toBeNull()
       expect(cart.cartItems.length).toEqual(0)
     });
